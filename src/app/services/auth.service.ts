@@ -50,15 +50,6 @@ export class AuthService {
     return this.getToken() !== null;
   }
 
-  // login(): Observable<string | boolean> {
-  //   if (this.token$) {
-  //     this.setToken(this.token$);
-  //     return of(true);
-  //   }
-
-  //   return throwError(() => new Error('Failed Login'));
-  // }
-
   logout() {
     // localStorage.removeItem('token') in Guards
     this.router.navigate(['login']);
