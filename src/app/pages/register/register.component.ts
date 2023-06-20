@@ -6,12 +6,12 @@ import { AuthService } from 'src/app/services/auth.service';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent implements OnInit {
   registerForm!: FormGroup;
 
-  constructor(private authService: AuthService, private router: Router,) { }
+  constructor(private authService: AuthService, private router: Router) {}
 
   submitRegister() {
     this.authService.register(this.registerForm.value).subscribe(
@@ -34,5 +34,8 @@ export class RegisterComponent implements OnInit {
       ]),
     });
 
+    if (this.authService.isLoggedIn()) {
+      this.router.navigate(['admin/projects']);
+    }
   }
 }

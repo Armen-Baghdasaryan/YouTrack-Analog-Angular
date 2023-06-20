@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './components/login/login.component';
-import { NotFoundComponent } from './components/not-found/not-found.component';
-import { RegisterComponent } from './components/register/register.component';
+import { LoginComponent } from './pages/login/login.component';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { RegisterComponent } from './pages/register/register.component';
 import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
@@ -16,7 +16,7 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     canDeactivate: [AuthGuard],
     loadChildren: () =>
-      import('./components/modules/admin/admin.module').then((m) => m.AdminModule),
+      import('./pages/modules/admin/admin.module').then((m) => m.AdminModule),
   },
   { path: '**', component: NotFoundComponent },
 ];
