@@ -12,7 +12,7 @@ import { AuthService } from 'src/app/services/auth.service';
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
   token$!: Observable<string | undefined>;
-  currentUser$!: Observable<string | undefined>;
+  // currentUser$!: Observable<string | undefined>;
 
   constructor(private authService: AuthService, private router: Router,) { }
 
@@ -23,14 +23,9 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  handleCheck() {
-    this.token$.subscribe((token) => console.log('token: ', token));
-    this.currentUser$.subscribe((uid) => console.log('uid: ', uid));
-  }
-
   ngOnInit(): void {
     this.token$ = this.authService.token$;
-    this.currentUser$ = this.authService.currentUser$
+    // this.currentUser$ = this.authService.currentUser$
 
     this.loginForm = new FormGroup({
       email: new FormControl('', [

@@ -2,21 +2,19 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, from, of, throwError } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
+import { CurrentUser } from '../models/interfaces';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private tokenSubject: BehaviorSubject<string | undefined> = new BehaviorSubject<
-    string | undefined
-  >('');
+  private tokenSubject: BehaviorSubject<string | undefined> = new BehaviorSubject<string | undefined>('');
   token$ = this.tokenSubject.asObservable();
 
-  private currentUserIdSubject: BehaviorSubject<string | undefined> =
-    new BehaviorSubject<string | undefined>('');
-  currentUser$ = this.currentUserIdSubject.asObservable();
+  private currentUserSubject: BehaviorSubject<CurrentUser | null> = new BehaviorSubject<CurrentUser | null>({})
+  currentUser$ = this.currentUserSubject.asObservable()
 
-  constructor(private auth: AngularFireAuth, private router: Router ) {}
+  constructor(private auth: AngularFireAuth, private router: Router) { }
 
   signIn(params: SignIn): Observable<any> {
 
@@ -24,9 +22,15 @@ export class AuthService {
       this.auth
         .signInWithEmailAndPassword(params.email, params.password)
         .then((data) => {
-          this.currentUserIdSubject.next(data?.user?.uid);
           this.tokenSubject.next(data?.user?.refreshToken);
           this.setToken(data?.user?.refreshToken);
+
+          this.currentUserSubject.next({
+            token: data?.user?.refreshToken,
+            uid: data?.user?.uid,
+            role: `${data?.user?.email === 'admin1@gmail.com' || data?.user?.email === 'admin2@gmail.com' ? 'admin' : 'user'}`
+          })
+
           return of(true);
         })
     );
