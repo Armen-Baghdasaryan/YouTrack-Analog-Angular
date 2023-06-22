@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -11,8 +10,6 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
-  token$!: Observable<string | undefined>;
-  // currentUser$!: Observable<string | undefined>;
 
   constructor(private authService: AuthService, private router: Router,) { }
 
@@ -24,8 +21,6 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.token$ = this.authService.token$;
-    // this.currentUser$ = this.authService.currentUser$
 
     this.loginForm = new FormGroup({
       email: new FormControl('', [

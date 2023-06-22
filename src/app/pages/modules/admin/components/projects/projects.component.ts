@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 import { CurrentUser } from 'src/app/models/interfaces';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -9,41 +9,25 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./projects.component.scss']
 })
 export class ProjectsComponent implements OnInit {
-  token$!: Observable<string | undefined>;
-  currentUser$!: Observable<CurrentUser | null>
+  // token$!: Observable<string | undefined>;
+  currentUser!: CurrentUser;
+  token!: string | null;
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
-    this.token$ = this.authService.token$
-    this.currentUser$ = this.authService.currentUser$
-    this.token$.subscribe(token => {
-      this.checkTokenAndCurrentUser(token);
-    });
+    this.token = this.authService.getToken()
+    this.currentUser = this.authService.getCurrentUser()
 
-    this.currentUser$.subscribe(currentUser => {
-      this.checkTokenAndCurrentUser(currentUser?.token);
-    });
-
-  }
-
-  checkTokenAndCurrentUser(token: string | undefined) {
-    let currentUserToken: string | undefined;
-
-    this.currentUser$.subscribe(currentUser => {
-      currentUserToken = currentUser?.token;
-
-      if (token === currentUserToken) {
-        console.log('The values are equal.');
-      } else {
-        console.log('The values are not equal.');
-      }
-    });
+    if (this.currentUser !== undefined && this.currentUser?.token !== this.token) {
+      alert('Ooops! Хитрый какой )))')
+      localStorage.removeItem('token');
+      localStorage.removeItem('currentUser');
+      this.router.navigate(['login'])
+    }
   }
 
   checkUser() {
-    this.currentUser$.subscribe(user => {
-      console.log(user)
-    })
+    console.log(this.currentUser)
   }
 }

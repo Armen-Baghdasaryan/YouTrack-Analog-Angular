@@ -1,18 +1,15 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, from, of, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, from, of } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
-import { CurrentUser } from '../models/interfaces';
+import { CurrentUser, SignIn } from '../models/interfaces';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private tokenSubject: BehaviorSubject<string | undefined> = new BehaviorSubject<string | undefined>('');
-  token$ = this.tokenSubject.asObservable();
-
-  private currentUserSubject: BehaviorSubject<CurrentUser | null> = new BehaviorSubject<CurrentUser | null>({})
-  currentUser$ = this.currentUserSubject.asObservable()
+  // private tokenSubject: BehaviorSubject<string | undefined> = new BehaviorSubject<string | undefined>('');
+  // token$ = this.tokenSubject.asObservable();
 
   constructor(private auth: AngularFireAuth, private router: Router) { }
 
@@ -22,13 +19,14 @@ export class AuthService {
       this.auth
         .signInWithEmailAndPassword(params.email, params.password)
         .then((data) => {
-          this.tokenSubject.next(data?.user?.refreshToken);
+
           this.setToken(data?.user?.refreshToken);
 
-          this.currentUserSubject.next({
-            token: data?.user?.refreshToken,
+          this.setCurrentUser({
+            email: data?.user?.email,
+            role: `${data?.user?.email === 'admin1@gmail.com' || data?.user?.email === 'admin2@gmail.com' ? 'admin' : 'user'}`,
             uid: data?.user?.uid,
-            role: `${data?.user?.email === 'admin1@gmail.com' || data?.user?.email === 'admin2@gmail.com' ? 'admin' : 'user'}`
+            token: data?.user?.refreshToken,
           })
 
           return of(true);
@@ -42,12 +40,23 @@ export class AuthService {
     );
   }
 
-  setToken(token: any) {
-    localStorage.setItem('token', token);
+  setToken(token: string | undefined) {
+    if (token !== undefined) {
+      localStorage.setItem('token', token);
+    }
   }
 
   getToken() {
     return localStorage.getItem('token');
+  }
+
+  setCurrentUser(user: CurrentUser) {
+    localStorage.setItem('currentUser', JSON.stringify(user))
+  }
+
+  getCurrentUser() {
+    const curUser = localStorage.getItem('currentUser')
+    return curUser ? JSON.parse(curUser) : null
   }
 
   isLoggedIn() {
@@ -55,12 +64,10 @@ export class AuthService {
   }
 
   logout() {
-    // localStorage.removeItem('token') in Guards
-    this.router.navigate(['login']);
+    if (confirm('Are you sure?')) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('currentUser');
+      this.router.navigate(['login']);
+    }
   }
-}
-
-interface SignIn {
-  email: string;
-  password: string;
 }

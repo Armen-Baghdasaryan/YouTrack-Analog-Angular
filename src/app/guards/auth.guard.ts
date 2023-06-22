@@ -40,10 +40,6 @@ export class AuthGuard implements CanActivate, CanDeactivate<unknown> {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    if (confirm('Are you sure?')) {
-      localStorage.removeItem('token');
-      return true;
-    }
-    return false;
+    return true;
   }
 }

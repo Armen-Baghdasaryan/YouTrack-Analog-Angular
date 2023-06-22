@@ -11,14 +11,14 @@ import { AuthService } from 'src/app/services/auth.service';
 export class RegisterComponent implements OnInit {
   registerForm!: FormGroup;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) { }
 
   submitRegister() {
     this.authService.register(this.registerForm.value).subscribe(
-      (data) => {
-        // console.log(data);
-      },
-      (err) => console.error(err)
+      {
+        next: () => this.router.navigate(['login']),
+        error: (err) => alert(err.message)
+      }
     );
   }
 
