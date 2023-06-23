@@ -9,3 +9,10 @@ export interface CurrentUser {
     role?: string
     email?: string | null
 }
+
+export interface IProjects {
+    name: string
+    description: string
+    userId?: string
+    number?: string 
+}

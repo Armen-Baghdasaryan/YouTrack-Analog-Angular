@@ -15,7 +15,7 @@ export class LoginComponent implements OnInit {
 
   submitLogin() {
     this.authService.signIn(this.loginForm.value).subscribe({
-      next: () => this.router.navigate(['admin/projects']),
+      next: () => this.router.navigate(['dashboard/projects']),
       error: (err) => alert(err.message)
     });
   }
@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
     });
 
     if (this.authService.isLoggedIn()) {
-      this.router.navigate(['admin/projects'])
+      this.router.navigate(['dashboard/projects'])
     }
   }
 }

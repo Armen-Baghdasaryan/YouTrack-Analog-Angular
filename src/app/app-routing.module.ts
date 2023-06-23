@@ -12,11 +12,11 @@ const routes: Routes = [
     path: '', redirectTo: '/login', pathMatch: 'full'
   },
   {
-    path: 'admin',
+    path: 'dashboard',
     canActivate: [AuthGuard],
     canDeactivate: [AuthGuard],
     loadChildren: () =>
-      import('./pages/modules/admin/admin.module').then((m) => m.AdminModule),
+      import('./pages/modules/dashboard/dashboard.module').then((m) => m.DashboardModule),
   },
   { path: '**', component: NotFoundComponent },
 ];

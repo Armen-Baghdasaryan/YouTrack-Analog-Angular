@@ -35,7 +35,7 @@ export class RegisterComponent implements OnInit {
     });
 
     if (this.authService.isLoggedIn()) {
-      this.router.navigate(['admin/projects']);
+      this.router.navigate(['dashboard/projects']);
     }
   }
 }

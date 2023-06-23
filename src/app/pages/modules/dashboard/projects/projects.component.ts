@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CurrentUser } from 'src/app/models/interfaces';
 import { AuthService } from 'src/app/services/auth.service';
@@ -10,6 +11,7 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class ProjectsComponent implements OnInit {
   // token$!: Observable<string | undefined>;
+  projectForm!: FormGroup;
   currentUser!: CurrentUser;
   token!: string | null;
 
@@ -18,6 +20,19 @@ export class ProjectsComponent implements OnInit {
   ngOnInit(): void {
     this.token = this.authService.getToken()
     this.currentUser = this.authService.getCurrentUser()
+
+    this.projectForm = new FormGroup({
+      name: new FormControl('', [
+        Validators.required,
+        //  Validators.email
+      ]),
+      description: new FormControl('', [
+        Validators.required,
+      ]),
+      number: new FormControl('', [
+        Validators.required,
+      ]),
+    });
 
     if (this.currentUser !== undefined && this.currentUser?.token !== this.token) {
       alert('Ooops! Хитрый какой )))')
@@ -29,5 +44,9 @@ export class ProjectsComponent implements OnInit {
 
   checkUser() {
     console.log(this.currentUser)
+  }
+
+  addProject() {
+    console.log(this.projectForm.value)
   }
 }

@@ -3,13 +3,13 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-dashborad',
-  templateUrl: './admin-dashborad.component.html',
-  styleUrls: ['./admin-dashborad.component.scss'],
+  templateUrl: './main.component.html',
+  styleUrls: ['./main.component.scss'],
 })
-export class AdminDashboradComponent implements OnInit {
+export class MainComponent implements OnInit {
   constructor(private router: Router) {}
 
   ngOnInit(): void {
-    this.router.navigate(['admin/projects']);
+    this.router.navigate(['dashboard/projects']);
   }
 }
