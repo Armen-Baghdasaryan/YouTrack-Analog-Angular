@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "youtrack-analog": {
+      "hosting": {
+        "youtrack-analog": [
+          "youtrack-analog"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "youtrack-analog"
+  }
+}

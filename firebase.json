@@ -1,0 +1,9 @@
+{
+  "hosting": [
+    {
+      "target": "youtrack-analog",
+      "source": ".",
+      "frameworksBackend": {}
+    }
+  ]
+}

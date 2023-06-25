@@ -1,68 +1,72 @@
 <h1>PROJECTS PAGE</h1>
-<button (click)="checkUser()">Check User</button>
 <button *ngIf="currentUser.role === 'admin'">Add user</button>
 
-<form [formGroup]="projectForm" (ngSubmit)="addProject()" class="form__project">
-    <div>
-      <input
-        formControlName="name"
-        type="text"
-        id="typeNameX"
-      />
-      <label for="typeNameX">name</label>
-      <p
-        *ngIf="
-          this.projectForm.get('name')?.invalid &&
-          this.projectForm.get('name')?.touched
-        "
-      >
-        <small>Incorrect name</small>
-      </p>
-    </div>
+<div class="app__projects">
+  <h2>Projects</h2>
 
-    <div>
-      <input
-        formControlName="description"
-        type="text"
-        id="typedescriptionX"
-      />
-      <label for="typeDescriptionX">Description</label>
-      <p
-        *ngIf="
-          this.projectForm.get('password')?.invalid &&
-          this.projectForm.get('password')?.touched
-        "
-      >
-        <small>
-          Incorrect description
-        </small>
-      </p>
-    </div>
-
-    <div>
-      <input
-        formControlName="number"
-        type="text"
-        id="typeNumberX"
-      />
-      <label for="typeNumberX">Number</label>
-      <p
-        *ngIf="
-          this.projectForm.get('number')?.invalid &&
-          this.projectForm.get('number')?.touched
-        "
-      >
-        <small>
-          Incorrect number
-        </small>
-      </p>
-    </div>
-
-    <button
-      [disabled]="projectForm.invalid"
-      [ngClass]="{ 'btn-disabled': projectForm.invalid }"
-      type="submit"
+  <div *ngFor="let project of projects">
+    <div class="project__item"
+    [routerLink]="[serializeProject(project)]"
     >
-      Add Project
-    </button>
-  </form>
+      <h4>Name: {{ project.name }}</h4>
+      <p>Number: {{ project.number }}</p>
+       More ...
+      <hr />
+    </div>
+  </div>
+</div>
+
+<form
+  [formGroup]="projectForm"
+  (ngSubmit)="createProject()"
+  class="form__project"
+>
+  <div>
+    <input formControlName="name" type="text" id="typeNameX" />
+    <label for="typeNameX">name</label>
+    <p
+      *ngIf="
+        this.projectForm.get('name')?.invalid &&
+        this.projectForm.get('name')?.touched
+      "
+    >
+      <small>Incorrect name</small>
+    </p>
+  </div>
+
+  <div>
+    <input formControlName="description" type="text" id="typedescriptionX" />
+    <label for="typeDescriptionX">Description</label>
+    <p
+      *ngIf="
+        this.projectForm.get('password')?.invalid &&
+        this.projectForm.get('password')?.touched
+      "
+    >
+      <small> Incorrect description </small>
+    </p>
+  </div>
+
+  <div>
+    <input formControlName="number" type="text" id="typeNumberX" />
+    <label for="typeNumberX">Number</label>
+    <p
+      *ngIf="
+        this.projectForm.get('number')?.invalid &&
+        this.projectForm.get('number')?.touched
+      "
+    >
+      <small> Incorrect number </small>
+    </p>
+  </div>
+
+  <button
+    [disabled]="projectForm.invalid"
+    [ngClass]="{ 'btn-disabled': projectForm.invalid }"
+    type="submit"
+  >
+    Add Project
+  </button>
+</form>
+
+<input type="file" (change)="onFileChange($event)" />

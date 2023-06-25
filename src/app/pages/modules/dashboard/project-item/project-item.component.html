@@ -1,0 +1,8 @@
+<h1>Name: {{project.name}}</h1>
+<h2>Description: {{project.description}}</h2>
+<h3>Number: {{project.number}}</h3>
+<button [routerLink]="['../']">Go Back</button>
+<div style="margin-top: 20px">
+  <button (click)="ubdateProject()">Ubdate</button>
+  <button (click)="deleteProject(project.id)">Delete</button>
+</div>
